@@ -1,0 +1,76 @@
+set number
+set encoding=UTF-8
+set autoindent
+set tabstop=4
+set shiftwidth=4
+set noswapfile
+set expandtab
+
+call plug#begin()
+Plug 'ryanoasis/vim-devicons' "Icons Plugin
+Plug 'vim-airline/vim-airline' "Status Bar Plugin
+Plug 'preservim/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'PhilRunninger/nerdtree-visual-selection'
+"Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-lua/plenary.nvim'
+" Using Vim-Plug
+Plug 'navarasu/onedark.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' } "Fuzzy Finder
+
+"Plug 'glepnir/zephyr-nvim' "Colorscheme
+Plug 'nvim-treesitter/nvim-treesitter' "Syntax Color
+Plug 'xiyaowong/transparent.nvim' "Transparent Background
+
+call plug#end()
+
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+nnoremap <A-q> :wq! <CR>
+nnoremap <A-t> :belowright split term://bash <CR> i
+autocmd FileType python nnoremap <buffer> <A-r> :w <CR> :belowright split term://python3 %<CR> i
+autocmd FileType cpp nnoremap <buffer> <A-r> :w<CR> :belowright split term://g++ % -o %<.out && ./%<.out && rm %<.out<CR> i
+autocmd FileType c nnoremap <buffer> <A-r> :w<CR> :belowright split term://gcc % -o %<.out && ./%<.out && rm %<.out<CR> i
+autocmd FileType java nnoremap <buffer> <A-r> :w<CR> :belowright split term://javac % && java %:r<CR> i
+
+
+" Move cursor among windows using Alt+Arrow keys
+nnoremap <A-Left>  <C-w>h
+nnoremap <A-Right> <C-w>l
+nnoremap <A-Up>    <C-w>k
+nnoremap <A-Down>  <C-w>j
+
+"Autocompletion with Enter with coc.nvim
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+
+" Find files using Telescope command-line sugar.
+nnoremap ff <cmd>Telescope find_files<cr>
+nnoremap fg <cmd>Telescope live_grep<cr>
+nnoremap fb <cmd>Telescope buffers<cr>
+nnoremap fh <cmd>Telescope help_tags<cr>
+
+"Colorscheme
+
+let g:onedark_config = {
+  \ 'style': 'deep',
+  \ 'toggle_style_key': '<leader>ts',
+  \ 'ending_tildes': v:true,
+  \ 'diagnostics': {
+    \ 'darker': v:false,
+    \ 'background': v:false,
+  \ },
+\ }
+
+colorscheme onedark
+
+
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
